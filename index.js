@@ -6,8 +6,6 @@ const fs = require('fs');
 const app = express();
 app.use(express.static('public'));
 app.use(express.json());
-
-// Statik klasör: QR çıktıları burada barınır
 app.use('/qrs', express.static(path.join(__dirname, 'qrs')));
 
 // QR kod oluşturma endpoint'i
@@ -26,5 +24,4 @@ app.post('/generate', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Qreator API running on port ${PORT}`));
+module.exports = app;
