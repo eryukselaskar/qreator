@@ -4,14 +4,24 @@ async function generateQR() {
     const format = document.getElementById("format")?.value || "svg";
     const fgColor = document.getElementById("fgColor")?.value || "#000000";
     const bgColor = document.getElementById("bgColor")?.value || "#ffffff";
+    const logoFile = document.getElementById("logoUpload").files[0];
   
     if (!urlInput) return alert("Please enter a URL.");
   
-    // UTM kampanyası varsa ekle
     let finalUrl = urlInput;
     if (campaign) {
       finalUrl += (urlInput.includes('?') ? '&' : '?') +
         `utm_source=qreator&utm_medium=qr&utm_campaign=${encodeURIComponent(campaign)}`;
+    }
+  
+    let logoBase64 = null;
+    if (logoFile) {
+      logoBase64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(logoFile);
+      });
     }
   
     const res = await fetch("/api/generate", {
@@ -21,7 +31,8 @@ async function generateQR() {
         url: finalUrl,
         format,
         fgColor,
-        bgColor
+        bgColor,
+        logoBase64
       }),
     });
   

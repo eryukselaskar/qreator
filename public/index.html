@@ -9,6 +9,7 @@
 <body>
   <div class="container">
     <h1>Qreator</h1>
+
     <p>Enter the URL to generate a QR code:</p>
     <input id="urlInput" type="text" placeholder="https://example.com" />
 
@@ -24,6 +25,9 @@
     <p>Colors:</p>
     <label>Foreground: <input type="color" id="fgColor" value="#000000" /></label>
     <label>Background: <input type="color" id="bgColor" value="#ffffff" /></label>
+
+    <p>Upload Logo (optional):</p>
+    <input id="logoUpload" type="file" accept="image/*" />
 
     <br /><br />
     <button onclick="generateQR()">Generate</button>
