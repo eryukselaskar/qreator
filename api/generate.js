@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   const options = {
     color: {
       dark: fgColor || '#000000',
-      light: bgColor || '#FFFFFF'
+      light: format === 'png' ? undefined : bgColor || '#FFFFFF'
     }
   };
 
@@ -20,7 +20,10 @@ export default async function handler(req, res) {
       res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
       res.status(200).send(svg);
     } else {
-      const png = await QRCode.toDataURL(url, options);
+      const png = await QRCode.toDataURL(url, {
+        ...options,
+        width: 500 //
+      });
       res.status(200).json({ image: png });
     }
   } catch (err) {
