@@ -1,39 +1,15 @@
 async function generateQR() {
-    const urlInput = document.getElementById("urlInput")?.value.trim();
-    const campaign = document.getElementById("campaign")?.value.trim();
+    const url = document.getElementById("urlInput")?.value.trim();
     const format = document.getElementById("format")?.value || "svg";
     const fgColor = document.getElementById("fgColor")?.value || "#000000";
     const bgColor = document.getElementById("bgColor")?.value || "#ffffff";
-    const logoFile = document.getElementById("logoUpload").files[0];
   
-    if (!urlInput) return alert("Please enter a URL.");
-  
-    let finalUrl = urlInput;
-    if (campaign) {
-      finalUrl += (urlInput.includes('?') ? '&' : '?') +
-        `utm_source=qreator&utm_medium=qr&utm_campaign=${encodeURIComponent(campaign)}`;
-    }
-  
-    let logoBase64 = null;
-    if (logoFile) {
-      logoBase64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(logoFile);
-      });
-    }
+    if (!url) return alert("Please enter a URL.");
   
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        url: finalUrl,
-        format,
-        fgColor,
-        bgColor,
-        logoBase64
-      }),
+      body: JSON.stringify({ url, format, fgColor, bgColor }),
     });
   
     const result = document.getElementById("result");

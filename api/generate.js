@@ -1,7 +1,7 @@
 const QRCode = require('qrcode');
 
 export default async function handler(req, res) {
-  const { url, format, fgColor, bgColor, logoBase64 } = req.body;
+  const { url, format, fgColor, bgColor } = req.body;
 
   if (!url || !format) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -16,19 +16,7 @@ export default async function handler(req, res) {
 
   try {
     if (format === 'svg') {
-      let svg = await QRCode.toString(url, { type: 'svg', ...options });
-
-      if (logoBase64) {
-        const escapedLogo = logoBase64.replace(/"/g, '&quot;');
-
-        // SVG'yi aç, içine logo ekle ama <svg ...> tagine dokunma
-        const indexOfSvgClose = svg.indexOf('</svg>');
-        const logoSvg = `<image href="${escapedLogo}" x="35%" y="35%" width="30%" height="30%" />`;
-
-        // Yeni içerikli SVG üret
-        svg = svg.slice(0, indexOfSvgClose) + logoSvg + svg.slice(indexOfSvgClose);
-      }
-
+      const svg = await QRCode.toString(url, { type: 'svg', ...options });
       res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
       res.status(200).send(svg);
     } else {
