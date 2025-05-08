@@ -5,15 +5,28 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Only POST allowed' });
   }
 
-  const { url } = req.body;
-  if (!url) {
-    return res.status(400).json({ error: 'URL is required' });
+  const { url, format, fgColor, bgColor } = req.body;
+
+  if (!url || !format) {
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
   try {
-    const svg = await QRCode.toString(url, { type: 'svg' });
-    res.setHeader('Content-Type', 'image/svg+xml');
-    res.status(200).send(svg);
+    const options = {
+      color: {
+        dark: fgColor || '#000000',
+        light: bgColor || '#FFFFFF'
+      }
+    };
+
+    if (format === 'svg') {
+      const svg = await QRCode.toString(url, { type: 'svg', ...options });
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.status(200).send(svg);
+    } else {
+      const png = await QRCode.toDataURL(url, options);
+      res.status(200).json({ image: png });
+    }
   } catch (err) {
     res.status(500).json({ error: 'QR generation failed', details: err });
   }
