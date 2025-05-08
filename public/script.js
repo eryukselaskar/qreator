@@ -1,9 +1,8 @@
-// public/script.js
 async function generateQR() {
     const url = document.getElementById("urlInput").value;
-    if (!url) return alert("Lütfen bir URL girin!");
+    if (!url) return alert("Please enter a URL");
   
-    const res = await fetch("/generate", {
+    const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url }),
@@ -11,15 +10,15 @@ async function generateQR() {
   
     const data = await res.json();
   
-    if (data.downloadUrl) {
+    if (data.image) {
       document.getElementById("result").innerHTML = `
-        <p>İndir veya tarat:</p>
-        <img src="${data.downloadUrl}" alt="QR Code"/>
+        <p>Scan or save your QR code:</p>
+        <img src="${data.image}" alt="QR Code"/>
         <br/>
-        <a href="${data.downloadUrl}" download="qreator_qr.png">📥 İndir</a>
+        <a href="${data.image}" download="qreator_qr.png">📥 Download</a>
       `;
     } else {
-      alert("QR kod oluşturulamadı.");
+      alert("Failed to generate QR.");
     }
   }
   
