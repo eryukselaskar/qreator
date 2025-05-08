@@ -1,0 +1,96 @@
+/* Genel body ayarları */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* İçeriği ortalamak için kapsayıcı */
+  .container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  /* Başlık */
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #00f5a0, #00d9f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Paragraf */
+  p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+  }
+  
+  /* URL girişi */
+  input {
+    padding: 14px;
+    width: 90%;
+    max-width: 300px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  /* Buton */
+  button {
+    padding: 14px 28px;
+    background: #00f5a0;
+    border: none;
+    border-radius: 10px;
+    color: #000;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 245, 160, 0.4);
+  }
+  
+  /* QR Görseli */
+  img {
+    margin-top: 30px;
+    max-width: 300px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  /* QR indir linki */
+  a {
+    color: #00d9f5;
+    margin-top: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+  }
+  
+  /* Footer */
+  footer {
+    font-size: 0.9rem;
+    color: #ccc;
+    padding: 30px 0;
+    text-align: center;
+  }
+  
