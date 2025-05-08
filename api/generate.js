@@ -1,4 +1,3 @@
-// api/generate.js
 const QRCode = require('qrcode');
 
 export default async function handler(req, res) {
@@ -12,8 +11,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const qr = await QRCode.toDataURL(url);
-    res.status(200).json({ image: qr });
+    const svg = await QRCode.toString(url, { type: 'svg' });
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.status(200).send(svg);
   } catch (err) {
     res.status(500).json({ error: 'QR generation failed', details: err });
   }

@@ -8,17 +8,13 @@ async function generateQR() {
       body: JSON.stringify({ url }),
     });
   
-    const data = await res.json();
+    const svg = await res.text(); // SVG metin olarak gelir!
   
-    if (data.image) {
-      document.getElementById("result").innerHTML = `
-        <p>Scan or save your QR code:</p>
-        <img src="${data.image}" alt="QR Code"/>
-        <br/>
-        <a href="${data.image}" download="qreator_qr.png">📥 Download</a>
-      `;
-    } else {
-      alert("Failed to generate QR.");
-    }
+    document.getElementById("result").innerHTML = `
+      <p>Your QR Code:</p>
+      <div id="qrSvg">${svg}</div>
+      <a href="data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}"
+         download="qreator_qr.svg">📥 Download SVG</a>
+    `;
   }
   
