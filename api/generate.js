@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   const options = {
     color: {
       dark: fgColor || '#000000',
-      light: format === 'png' ? undefined : bgColor || '#FFFFFF'
+      light: format === 'png' ? '#00000000' : (bgColor || '#FFFFFF')
     }
   };
 
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     } else {
       const png = await QRCode.toDataURL(url, {
         ...options,
-        width: 500 //
+        width: 500
       });
       res.status(200).json({ image: png });
     }
