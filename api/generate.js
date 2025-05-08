@@ -18,9 +18,16 @@ export default async function handler(req, res) {
     if (format === 'svg') {
       let svg = await QRCode.toString(url, { type: 'svg', ...options });
 
+      // <svg> tag'ına xlink namespace ekle
+      svg = svg.replace(
+        '<svg',
+        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"'
+      );
+
+      // Logo varsa göm
       if (logoBase64) {
         const logoSvg = `
-          <image xlink:href="${logoBase64}" x="35%" y="35%" height="30%" width="30%"/>
+          <image href="${logoBase64}" x="35%" y="35%" height="30%" width="30%" />
         `;
         svg = svg.replace('</svg>', `${logoSvg}</svg>`);
       }
