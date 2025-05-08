@@ -1,27 +1,35 @@
 async function generateQR() {
-    const urlInput = document.getElementById("urlInput").value.trim();
-    const campaign = document.getElementById("campaign").value.trim();
-    const format = document.getElementById("format").value;
-    const fgColor = document.getElementById("fgColor").value;
-    const bgColor = document.getElementById("bgColor").value;
+    const urlInput = document.getElementById("urlInput")?.value.trim();
+    const campaign = document.getElementById("campaign")?.value.trim();
+    const format = document.getElementById("format")?.value || "svg";
+    const fgColor = document.getElementById("fgColor")?.value || "#000000";
+    const bgColor = document.getElementById("bgColor")?.value || "#ffffff";
   
     if (!urlInput) return alert("Please enter a URL.");
   
-    let url = urlInput;
+    // UTM kampanyası varsa ekle
+    let finalUrl = urlInput;
     if (campaign) {
-      url += (url.includes('?') ? '&' : '?') +
+      finalUrl += (urlInput.includes('?') ? '&' : '?') +
         `utm_source=qreator&utm_medium=qr&utm_campaign=${encodeURIComponent(campaign)}`;
     }
   
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url, format, fgColor, bgColor }),
+      body: JSON.stringify({
+        url: finalUrl,
+        format,
+        fgColor,
+        bgColor
+      }),
     });
+  
+    const result = document.getElementById("result");
   
     if (format === 'svg') {
       const svg = await res.text();
-      document.getElementById("result").innerHTML = `
+      result.innerHTML = `
         <p>Your QR Code:</p>
         <div id="qrSvg">${svg}</div>
         <a href="data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}"
@@ -29,7 +37,7 @@ async function generateQR() {
       `;
     } else {
       const data = await res.json();
-      document.getElementById("result").innerHTML = `
+      result.innerHTML = `
         <p>Your QR Code:</p>
         <img src="${data.image}" alt="QR Code"/>
         <br/>

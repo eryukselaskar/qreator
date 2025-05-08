@@ -2,7 +2,7 @@ const QRCode = require('qrcode');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Only POST allowed' });
+    return res.status(405).json({ error: 'Only POST method allowed' });
   }
 
   const { url, format, fgColor, bgColor } = req.body;
